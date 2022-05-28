@@ -574,6 +574,9 @@ class CalibreDB:
             cls.config.invalidate()
             return False
 
+        # Option 3: 
+        # cls.dispose() here and delete on top
+
         try:
             cls.engine = create_engine('sqlite://',
                                        echo=False,
@@ -952,20 +955,27 @@ class CalibreDB:
 
     @classmethod
     def dispose(cls):
+        # Option 5: Look into dispose
         # global session
+        print("Dispose!")
 
         for inst in cls.instances:
+            print("instance")
             old_session = inst.session
             inst.session = None
             if old_session:
                 try:
+                    print("old session")
                     old_session.close()
                 except Exception:
+                    print("old session exception")
                     pass
                 if old_session.bind:
                     try:
+                        print("old session bind")
                         old_session.bind.dispose()
                     except Exception:
+                        print("old session bind exception")
                         pass
 
         for attr in list(Books.__dict__.keys()):

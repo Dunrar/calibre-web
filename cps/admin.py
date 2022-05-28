@@ -1668,6 +1668,8 @@ def _db_configuration_update_helper():
 
     if db_change or not db_valid or not config.db_configured \
             or config.config_calibre_dir != to_save["config_calibre_dir"]:
+        # Option 2:
+        # if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
