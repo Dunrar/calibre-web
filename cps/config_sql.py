@@ -353,11 +353,14 @@ class _ConfigSQL(object):
         self.load()
 
     def invalidate(self, error=None):
+        # Option 4: Look into invalidate 
         if error:
             log.error(error)
         log.warning("invalidating configuration")
+        print("invalidating configuration")
         self.db_configured = False
         # self.config_calibre_dir = None
+        print("Calibre Dir: ", self.config_calibre_dir)
         self.save()
 
     def store_calibre_uuid(self, calibre_db, Library_table):
