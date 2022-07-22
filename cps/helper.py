@@ -213,6 +213,17 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
         # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, kindle_mail)
 
+    # ToDo: Delete when OPF creation has been implemented
+    if config.config_binariesdir:
+        quotes = [3, 5]
+        calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+        opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
+        p = process_open(opf_command, quotes)
+        p.wait()
+        path_opf = os.path.join(config.config_calibre_dir, book.path, "metadata.opf")
+        with open(path_opf, 'w') as fd:
+            shutil.copyfileobj(p.stdout, fd)
+    
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
